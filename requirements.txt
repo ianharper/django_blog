@@ -1,0 +1,11 @@
+Django==1.11
+South==1.0.2
+argparse==1.2.1
+dj-database-url==0.4.2
+dj-static==0.0.6
+django-toolbelt==0.0.1
+gunicorn==19.7.1
+psycopg2==2.7.1
+pytz==2017.2
+static3==0.7.0
+wsgiref==0.1.2
