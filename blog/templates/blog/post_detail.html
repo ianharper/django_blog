@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+{% load blog_extras %}
 
 {% block content %}
 	<div class="post">
@@ -11,7 +12,7 @@
 			<a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
 		{% endif %}
 		<h1>{{ post.title }}</h1>
-		<p>{{ post.text|linebreaksbr }}</p>
+		<p>{{ post.text|markdownify|safe }}</p>
 		{% if images %}
 			{% for image in images %}
 				<img src="{{ image.image.url }}" class="img-fluid"/>
