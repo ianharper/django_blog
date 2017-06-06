@@ -12,5 +12,11 @@
 		{% endif %}
 		<h1>{{ post.title }}</h1>
 		<p>{{ post.text|linebreaksbr }}</p>
+		{% if images %}
+			{% for image in images %}
+				<img src="{{ image.image.url }}" class="img-fluid"/>
+				<p>{{ image.description }}</p>
+			{% endfor %}
+		{% endif %}
 	</div>
 {% endblock %}

@@ -2,8 +2,22 @@
 
 {% block content %}
 	<h1>New Post</h1>
-	<form method="POST" class="post-form">{% csrf_token %}
+	<form method="POST" class="post-form" enctype="multipart/form-data">
+		{% csrf_token %}
 		{{ form.as_p }}
+		
+		{% for hidden in postForm.hidden_fields %}
+        {{ hidden }}
+	    {% endfor %}
+
+	    {% for field in postForm %}
+	        {{ field }} <br />
+	    {% endfor %}
+
+	    {{ formset.management_form }}
+	    {% for form in formset %}
+	        {{ form }}
+	    {% endfor %}
 		<button type="submit">Save</button>
 	</form>
 {% endblock %}

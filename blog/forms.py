@@ -1,8 +1,16 @@
 from django import forms
-from .models import Post
+from .models import Post, Image
 
 class PostForm(forms.ModelForm):
 
 	class Meta: 
 		model = Post
-		fields = ('title', 'text')
+		fields = ('title', 'text', )
+
+class ImageForm(forms.ModelForm):
+	image = forms.ImageField(label='Image')		
+
+	class Meta:
+		model = Image
+		fields = ('image', 'description')
+			
