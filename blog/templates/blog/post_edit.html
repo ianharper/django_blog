@@ -5,7 +5,7 @@
 	<form method="POST" class="post-form" enctype="multipart/form-data">
 		{% csrf_token %}
 		{{ form.as_p }}
-		
+
 		{% for hidden in postForm.hidden_fields %}
         {{ hidden }}
 	    {% endfor %}

@@ -8,6 +8,8 @@ from .models import Post, Image
 from .forms import PostForm, ImageForm
 import re
 
+# import pdb; pdb.set_trace()
+
 def post_list(request):
 	posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
 	return render(request, 'blog/post_list.html', {'posts': posts})
@@ -72,7 +74,6 @@ def post_edit(request, pk):
 	else:
 		form = PostForm(instance=post)
 		formset = ImageFormSet(queryset = post.image_set.all())
-		# import pdb; pdb.set_trace()
 	return render(request, 'blog/post_edit.html', {'form': form, 'formset': formset})
 
 def swap_image_index_for_url(post):
