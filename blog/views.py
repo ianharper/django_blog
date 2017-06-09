@@ -14,8 +14,7 @@ def post_list(request):
 
 def post_detail(request, pk):
 	post = get_object_or_404(Post, pk=pk)
-	post = swap_image_index_for_url(post)
-	images = post.image_set.all()
+	images = swap_image_index_for_url(post)
 	return render(request, 'blog/post_detail.html', {'post': post, 'images': images})
 
 def post_new(request):
@@ -77,12 +76,25 @@ def post_edit(request, pk):
 	return render(request, 'blog/post_edit.html', {'form': form, 'formset': formset})
 
 def swap_image_index_for_url(post):
-	text = post.text.split('\n')
-	image_pattern = re.compile('(\!\[[A-Za-z\s0-9]*?\])(\[.*?\])')
-	for line in text:
-		matches = image_pattern.findall(line)
-		for match in matches:
-			print(match)
+	text = post.text.split('\r\n')
+	image_pattern = re.compile('(\!\[[A-Za-z\s0-9]*?\])(\(.*?\))')
 
-	post.text = text
-	return post
+	images = []
+	for image in post.image_set.all():
+		images.append(image)
+
+	for line in range(len(text)):
+		# matches = image_pattern.findall(text[line])
+		# for match in matches:
+		if images: 
+			url = images[0].image.url
+			description = images[0].description
+		else:
+			break
+		line_text = text[line]
+		text[line] = image_pattern.sub(r'\1('+url+' "'+description+'")', text[line])
+		if text[line] != line_text:
+			images.pop(0)
+	# import pdb; pdb.set_trace()
+	post.text = '\r\n'.join(text)
+	return images
