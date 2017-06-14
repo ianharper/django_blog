@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django import forms
 from django.forms import modelformset_factory
 from django.template import RequestContext
-from .models import Post, Image
+from .models import Post, Image, Tag
 from .forms import PostForm, ImageForm
 import re
 
@@ -32,18 +32,31 @@ def post_new(request):
 			post.published_date = timezone.now()
 			post.save()
 
+			for tagName in form.cleaned_data['tags']:
+				# tag = Tag.objects.filter(name=tagName)
+				# if not(tag):
+				# 	tag = Tag.objects.create(name=tagName)
+				try:
+					tag = Tag.objects.get(name=tagName)
+				except Tag.DoesNotExist:
+					tag = Tag.objects.create(name=tagName)
+				if not( tag in post.tags.all() ):
+					post.tags.add(tag)
+			import pdb; pdb.set_trace()
 			for form in formset:
 				if not 'image' in form.cleaned_data: continue
 				image = form.cleaned_data['image']
 				description = form.cleaned_data['description']
 				photo = Image(post = post, image = image, description = description)
 				photo.save()
+
 			return redirect('post_detail', pk=post.pk)
 		else:
-			print(post.errors, formset.errors)
+			print(form.errors, formset.errors)
 	else:
 		form = PostForm()
 		formset = ImageFormSet(queryset = Image.objects.none())
+		# nimport pdb; pdb.set_trace()
 	return render(request, 'blog/post_edit.html', {'form': form, 'formset': formset})
 
 			
@@ -85,8 +98,6 @@ def swap_image_index_for_url(post):
 		images.append(image)
 
 	for line in range(len(text)):
-		# matches = image_pattern.findall(text[line])
-		# for match in matches:
 		if images: 
 			url = images[0].image.url
 			description = images[0].description

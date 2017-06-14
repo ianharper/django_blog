@@ -10,6 +10,13 @@ class Category(models.Model):
 	def __str__(self):
 		return self.name
 
+class Tag(models.Model):
+	"""Post Tag"""
+	name = models.CharField('Tags', max_length=100)
+
+	def __str__(self):
+		return self.name
+
 class Post(models.Model):
 	author = models.ForeignKey('auth.User')
 	title = models.CharField(max_length=200)
@@ -19,6 +26,7 @@ class Post(models.Model):
 	published_date = models.DateTimeField(
 		blank = True, null = True)
 	category = models.ForeignKey(Category, default = '', blank = True, null = True)
+	tags = models.ManyToManyField(Tag, default='', blank=True)
 
 	def publish(self):
 		self.published_date = timezone.now()
@@ -41,4 +49,5 @@ class Image(models.Model):
 
 	def __str__(self):
 		return self.description
+
 
