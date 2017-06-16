@@ -15,18 +15,24 @@ class Tag(models.Model):
 	name = models.CharField('Tags', max_length=100)
 
 	def __str__(self):
-		return self.name
+		return self.name 
 
 class Post(models.Model):
 	author = models.ForeignKey('auth.User')
 	title = models.CharField(max_length=200)
 	text = models.TextField()
-	created_date = models.DateTimeField(
-		default = timezone.now)
-	published_date = models.DateTimeField(
-		blank = True, null = True)
+	created_date = models.DateTimeField(default = timezone.now)
+	published_date = models.DateTimeField(blank = True, null = True)
 	category = models.ForeignKey(Category, default = '', blank = True, null = True)
 	tags = models.ManyToManyField(Tag, default='', blank=True)
+
+	def getTagNames(self):
+		tagNames = ''
+		for tag in self.tags.all():
+			if tagNames: tagNames += ', '
+			tagNames += tag.name
+		import pdb; pdb.set_trace()
+		return tagNames
 
 	def publish(self):
 		self.published_date = timezone.now()

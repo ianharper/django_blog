@@ -33,16 +33,13 @@ def post_new(request):
 			post.save()
 
 			for tagName in form.cleaned_data['tags']:
-				# tag = Tag.objects.filter(name=tagName)
-				# if not(tag):
-				# 	tag = Tag.objects.create(name=tagName)
 				try:
 					tag = Tag.objects.get(name=tagName)
 				except Tag.DoesNotExist:
 					tag = Tag.objects.create(name=tagName)
 				if not( tag in post.tags.all() ):
 					post.tags.add(tag)
-			import pdb; pdb.set_trace()
+
 			for form in formset:
 				if not 'image' in form.cleaned_data: continue
 				image = form.cleaned_data['image']
@@ -75,6 +72,14 @@ def post_edit(request, pk):
 			post.published_date = timezone.now()
 			post.save()
 			
+			for tagName in form.cleaned_data['tags']:
+				try:
+					tag = Tag.objects.get(name=tagName)
+				except Tag.DoesNotExist:
+					tag = Tag.objects.create(name=tagName)
+				if not( tag in post.tags.all() ):
+					post.tags.add(tag)
+
 			for form in formset:
 				if not 'image' in form: continue
 				image = form['image']
@@ -85,6 +90,7 @@ def post_edit(request, pk):
 		else:
 			print(post.errors, formset.errors)
 	else:
+		# import pdb; pdb.set_trace()
 		form = PostForm(instance=post)
 		formset = ImageFormSet(queryset = post.image_set.all())
 	return render(request, 'blog/post_edit.html', {'form': form, 'formset': formset})
