@@ -32,6 +32,7 @@ def post_new(request):
 			post.published_date = timezone.now()
 			post.save()
 
+			# Add tags to post
 			for tagName in form.cleaned_data['tags']:
 				try:
 					tag = Tag.objects.get(name=tagName)
@@ -79,6 +80,11 @@ def post_edit(request, pk):
 					tag = Tag.objects.create(name=tagName)
 				if not( tag in post.tags.all() ):
 					post.tags.add(tag)
+
+			# Remove tags from post 
+			for tag in post.tags.all():
+				if not(tag.name in form.cleaned_data['tags']):
+					post.tags.remove(tag)
 
 			for form in formset:
 				if not 'image' in form: continue

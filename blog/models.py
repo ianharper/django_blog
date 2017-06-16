@@ -31,7 +31,6 @@ class Post(models.Model):
 		for tag in self.tags.all():
 			if tagNames: tagNames += ', '
 			tagNames += tag.name
-		import pdb; pdb.set_trace()
 		return tagNames
 
 	def publish(self):

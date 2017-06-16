@@ -13,6 +13,7 @@
 		{% endif %}
 		<h1>{{ post.title }}</h1>
 		<p>{{ post.text|markdownify|safe }}</p>
+		<p>{{ post.category }} : {{ post.getTagNames }}</p>
 		{% if images %}
 			{% for image in images %}
 				<img src="{{ image.image.url }}" class="img-fluid"/>
