@@ -13,7 +13,12 @@
 		{% endif %}
 		<h1>{{ post.title }}</h1>
 		<p>{{ post.text|markdownify|safe }}</p>
-		<p>{{ post.category }} : {{ post.getTagNames }}</p>
+		<h3><a href="{% url 'category_list' name=post.category.name %}">{{ post.category }}</a></h3>
+		<h3>
+		{% for tag in post.tags.all %}
+			<a href="{% url 'tag_list' name=tag.name %}">{{ tag.name }}</a>
+		{% endfor %}
+		</h3>
 		{% if images %}
 			{% for image in images %}
 				<img src="{{ image.image.url }}" class="img-fluid"/>

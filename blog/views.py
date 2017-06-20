@@ -122,3 +122,17 @@ def swap_image_index_for_url(post):
 	# import pdb; pdb.set_trace()
 	post.text = '\r\n'.join(text)
 	return images
+
+def category_list(request, name):
+	posts = Post.objects.filter(
+		published_date__lte=timezone.now(),
+		category__name__contains=name
+		).order_by('published_date')
+	return render(request, 'blog/category_list.html', {'posts': posts})
+
+def tag_list(request, name):
+	posts = Post.objects.filter(
+		published_date__lte=timezone.now(),
+		tags__name__contains=name
+		).order_by('published_date')
+	return render(request, 'blog/tag_list.html', {'posts': posts})

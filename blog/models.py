@@ -33,6 +33,14 @@ class Post(models.Model):
 			tagNames += tag.name
 		return tagNames
 
+	def getTagLi(self):
+		tagLi = ''
+		for tag in self.tags.all():
+			tagLi += '<a href="{% url \'tag_list\' name='+tag.name+' %}">'
+			tagLi += tag.name
+			tagLi += '</a>'
+		return tagLi
+
 	def publish(self):
 		self.published_date = timezone.now()
 		self.save
