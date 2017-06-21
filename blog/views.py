@@ -11,7 +11,9 @@ import re
 # import pdb; pdb.set_trace()
 
 def post_list(request):
-	posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+	posts = Post.objects.filter(
+		published_date__lte=timezone.now()
+		).order_by('-published_date')[:10]   
 	return render(request, 'blog/post_list.html', {'posts': posts})
 
 def post_detail(request, pk):
@@ -79,14 +81,14 @@ def category_list(request, name):
 	posts = Post.objects.filter(
 		published_date__lte=timezone.now(),
 		category__name__contains=name
-		).order_by('published_date')
+		).order_by('-published_date')[:10]   
 	return render(request, 'blog/category_list.html', {'posts': posts})
 
 def tag_list(request, name):
 	posts = Post.objects.filter(
 		published_date__lte=timezone.now(),
 		tags__name__contains=name
-		).order_by('published_date')
+		).order_by('-published_date')[:10]
 	return render(request, 'blog/tag_list.html', {'posts': posts})
 
 def save_post(request, form, formset):
