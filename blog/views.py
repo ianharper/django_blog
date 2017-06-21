@@ -26,29 +26,8 @@ def post_new(request):
 		form = PostForm(request.POST)
 		formset = ImageFormSet(request.POST, request.FILES, 
 			queryset=Image.objects.none())
-		if form.is_valid() and formset.is_valid():
-			post = form.save(commit=False)
-			post.author = request.user
-			post.published_date = timezone.now()
-			post.save()
-
-			# Add tags to post
-			for tagName in form.cleaned_data['tags']:
-				try:
-					tag = Tag.objects.get(name=tagName)
-				except Tag.DoesNotExist:
-					tag = Tag.objects.create(name=tagName)
-				if not( tag in post.tags.all() ):
-					post.tags.add(tag)
-
-			for form in formset:
-				if not 'image' in form.cleaned_data: continue
-				image = form.cleaned_data['image']
-				description = form.cleaned_data['description']
-				photo = Image(post = post, image = image, description = description)
-				photo.save()
-
-			return redirect('post_detail', pk=post.pk)
+		if save_post(request, form, formset):
+	 		return redirect('post_detail', pk=post.pk)
 		else:
 			print(form.errors, formset.errors)
 	else:
@@ -69,36 +48,7 @@ def post_edit(request, pk):
 		formset = ImageFormSet(request.POST, request.FILES, queryset=post.image_set.all())
 		if save_post(request, form, formset):
 	 		return redirect('post_detail', pk=post.pk)
-		# if form.is_valid():
-		# 	post = form.save(commit=False)
-		# 	post.author = request.user
-		# 	post.published_date = timezone.now()
-		# 	post.save()
-			
-		# 	for tagName in form.cleaned_data['tags']:
-		# 		try:
-		# 			tag = Tag.objects.get(name=tagName)
-		# 		except Tag.DoesNotExist:
-		# 			tag = Tag.objects.create(name=tagName)
-		# 		if not( tag in post.tags.all() ):
-		# 			post.tags.add(tag)
-
-		# 	# Remove tags from post 
-		# 	for tag in post.tags.all():
-		# 		if not(tag.name in form.cleaned_data['tags']):
-		# 			post.tags.remove(tag)
-
-		# 	for form in formset:
-		# 		if not 'image' in form: continue
-		# 		image = form['image']
-		# 		description = form['description']
-		# 		photo = Image(post = post, image = image, description = description)
-		# 		photo.save()
-		# 	return redirect('post_detail', pk=post.pk)
-		# else:
-		# 	print(post.errors, formset.errors)
 	else:
-		# import pdb; pdb.set_trace()
 		form = PostForm(instance=post)
 		formset = ImageFormSet(queryset = post.image_set.all())
 	return render(request, 'blog/post_edit.html', {'form': form, 'formset': formset})
