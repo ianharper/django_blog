@@ -45,6 +45,19 @@ class Post(models.Model):
 		self.published_date = timezone.now()
 		self.save
 
+	def create(item):
+		from django.contrib.auth.models import User
+		author = User.objects.filter(pk=1)[0]
+		category = Category.objects.filter(pk=item['category'])[0]
+		post = Post.objects.create(title=item['title'], category=category, 
+			text=item['text'], author=author, published_date=item['published_date'], 
+			created_date=item['published_date'])
+		for tagName in item['tags']:
+			post.tags.add(Tag.objects.filter(name=tagName))
+		post.save()
+		return post
+
+
 	def __str__(self):
 		return self.title
 
