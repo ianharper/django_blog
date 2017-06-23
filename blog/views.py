@@ -4,17 +4,22 @@ from django.shortcuts import redirect
 from django import forms
 from django.forms import modelformset_factory
 from django.template import RequestContext
+from django.core.paginator import Paginator, InvalidPage
+from django.http import HttpResponse, HttpResponseNotFound
 from .models import Post, Image, Tag
 from .forms import PostForm, ImageForm
 import re
 
 # import pdb; pdb.set_trace()
 
-def post_list(request):
-	posts = Post.objects.filter(
-		published_date__lte=timezone.now()
-		).order_by('-published_date')[:10]   
-	return render(request, 'blog/post_list.html', {'posts': posts})
+def post_list(request, page):
+	if not(page): page = 1
+	post_query = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+	posts = Paginator(post_query, 10)   
+	try:
+		return render(request, 'blog/post_list.html', {'posts': posts.page(page)})
+	except InvalidPage:
+		return HttpResponseNotFound('<h1>Page not found</h1>')
 
 def post_detail(request, pk):
 	post = get_object_or_404(Post, pk=pk)
@@ -77,19 +82,29 @@ def swap_image_index_for_url(post):
 	post.text = '\r\n'.join(text)
 	return images
 
-def category_list(request, name):
-	posts = Post.objects.filter(
+def category_list(request, name, page=1):
+	if not(page): page = 1
+	post_query = Post.objects.filter(
 		published_date__lte=timezone.now(),
 		category__name__contains=name
-		).order_by('-published_date')[:10]   
-	return render(request, 'blog/category_list.html', {'posts': posts})
+		).order_by('-published_date')
+	posts = Paginator(post_query, 10)
+	try:
+		return render(request, 'blog/category_list.html', {'posts': posts.page(page)})
+	except InvalidPage:
+		return HttpResponseNotFound('<h1>Page not found</h1>')
 
-def tag_list(request, name):
-	posts = Post.objects.filter(
+def tag_list(request, name, page=1):
+	if not(page): page = 1
+	post_query = Post.objects.filter(
 		published_date__lte=timezone.now(),
 		tags__name__contains=name
-		).order_by('-published_date')[:10]
-	return render(request, 'blog/tag_list.html', {'posts': posts})
+		).order_by('-published_date')
+	posts = Paginator(post_query, 10)
+	try:
+		return render(request, 'blog/tag_list.html', {'posts': posts.page(page)})
+	except InvalidPage:
+		return HttpResponseNotFound('<h1>Page not found</h1>')
 
 def save_post(request, form, formset):
 	if form.is_valid():

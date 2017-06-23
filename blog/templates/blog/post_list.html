@@ -10,4 +10,15 @@
 	        <p>{{ post.text|linebreaksbr }}</p>
 	    </div>
 	{% endfor %}
+
+	<div class="pagination">
+		<span>
+			{% if posts.has_previous %}
+				<a href="{{ posts.previous_page_number }}">Prev</a>
+			{% endif %}
+			{% if posts.has_next %}
+				<a href="{{ posts.next_page_number }}">Next</a>
+			{% endif %}
+		</span>
+	</div>
 {% endblock %}
