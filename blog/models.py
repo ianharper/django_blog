@@ -25,6 +25,7 @@ class Post(models.Model):
 	published_date = models.DateTimeField(blank = True, null = True)
 	category = models.ForeignKey(Category, default = '', blank = True, null = True)
 	tags = models.ManyToManyField(Tag, default='', blank=True)
+	excerpt = models.CharField(max_length=500, blank=True, default='')
 
 	def getTagNames(self):
 		tagNames = ''

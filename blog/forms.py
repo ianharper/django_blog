@@ -16,7 +16,8 @@ class MultiKeyTextField(forms.CharField):
 class PostForm(forms.ModelForm):
 	class Meta: 
 		model = Post
-		fields = ('title', 'text', 'category','tags')
+		fields = ('title', 'text', 'excerpt', 'category','tags')
+		widgets = { 'excerpt': forms.Textarea(attrs={'rows':5})}
 	tags = MultiKeyTextField()
 	
 

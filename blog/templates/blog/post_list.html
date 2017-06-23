@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+{% load blog_extras %}
 
 {% block content %}
 	{% for post in posts %}
@@ -7,7 +8,7 @@
 	            {{ post.published_date }}
 	        </div>
 	        <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-	        <p>{{ post.text|linebreaksbr }}</p>
+	        <p>{{ post.excerpt|markdownify|safe }}</p>
 	    </div>
 	{% endfor %}
 

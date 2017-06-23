@@ -40,7 +40,6 @@ def post_new(request):
 	else:
 		form = PostForm()
 		formset = ImageFormSet(queryset = Image.objects.none())
-		# nimport pdb; pdb.set_trace()
 	return render(request, 'blog/post_edit.html', {'form': form, 'formset': formset})
 
 			
@@ -111,6 +110,11 @@ def save_post(request, form, formset):
 		post = form.save(commit=False)
 		post.author = request.user
 		post.published_date = timezone.now()
+		if not(post.excerpt): 
+			if len(post.text) > 500: 
+				post.excerpt = post.text[:497] + '...'
+			else:
+				post.excerpt = post.text[:500]
 		post.save()
 		
 		for tagName in form.cleaned_data['tags']:
@@ -134,5 +138,4 @@ def save_post(request, form, formset):
 			photo.save()
 		return True
 	else:
-		print(post.errors, formset.errors)
 		return False
