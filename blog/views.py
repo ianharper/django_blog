@@ -60,8 +60,10 @@ def post_edit(request, pk):
 	return render(request, 'blog/post_edit.html', {'form': form, 'formset': formset})
 
 def swap_image_index_for_url(post):
-	text = post.text.split('\r\n')
-	image_pattern = re.compile('(\!\[[A-Za-z\s0-9]*?\])(\(.*?\))')
+	# todo: this should really be handled in the load -> edit -> save work flow.
+	text = post.text.split('\n')
+	image_pattern = re.compile('(\!\[.*?\]\().*?\]')
+	# todo: this regex should be looking for the image index and pulling the image that way.
 
 	images = []
 	for image in post.image_set.all():
@@ -74,10 +76,12 @@ def swap_image_index_for_url(post):
 		else:
 			break
 		line_text = text[line]
-		text[line] = image_pattern.sub(r'\1('+url+' "'+description+'")', text[line])
-		if text[line] != line_text:
+		if line_text.find(url) >= 0:
 			images.pop(0)
-	# import pdb; pdb.set_trace()
+		else:
+			text[line] = image_pattern.sub(r'\1'+url+')]', text[line])
+			if text[line] != line_text:
+				images.pop(0)
 	post.text = '\r\n'.join(text)
 	return images
 
@@ -95,6 +99,7 @@ def category_list(request, name, page=1):
 
 def tag_list(request, name, page=1):
 	if not(page): page = 1
+	name = name.replace("_", " ")
 	post_query = Post.objects.filter(
 		published_date__lte=timezone.now(),
 		tags__name__contains=name
