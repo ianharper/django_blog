@@ -60,33 +60,19 @@ def post_edit(request, pk):
 	return render(request, 'blog/post_edit.html', {'form': form, 'formset': formset})
 
 def swap_image_index_for_url(post):
-	# todo: this should really be handled in the load -> edit -> save work flow.
 	text = post.text.split('\n')
-	# image_pattern = re.compile('(\!\[.*?\]\().*?\]\(.*\)')
 	image_pattern = re.compile('(\!\[.*?\]\[(.*?)\])(\]\(.*?\))?')
-	# todo: this regex should be looking for the image index and pulling the image that way.
 
 	images = []
 	for image in post.image_set.all():
 		images.append(image)
 	
 	for line in range(len(text)):
-		if images[0]: 
-			url = images[0].image.url
-			description = images[0].description
-		else:
-			break
 		line_text = text[line]
-		# if line_text.find(url) >= 0:
-		# 	images.pop(0)
-		# else:
-		# 	# text[line] = image_pattern.sub(r'\[!'+description+'\]\('+url+')]'+'\('+url+')', text[line])
-			# if text[line] != line_text:
-			# 	images.pop(0)
 		pattern_match = image_pattern.search(line_text)
-		# import pdb; pdb.set_trace()
 		if pattern_match != None:
 			image = images[int(pattern_match.group(2)) - 1]
+			import pdb; pdb.set_trace()
 			image_reference = '[' + pattern_match.group(2) + ']: ' + image.image.url
 			text.append('\r\n' + image_reference)
 			images[int(pattern_match.group(2)) - 1] = None
