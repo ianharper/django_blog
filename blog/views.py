@@ -62,26 +62,37 @@ def post_edit(request, pk):
 def swap_image_index_for_url(post):
 	# todo: this should really be handled in the load -> edit -> save work flow.
 	text = post.text.split('\n')
-	image_pattern = re.compile('(\!\[.*?\]\().*?\]')
+	# image_pattern = re.compile('(\!\[.*?\]\().*?\]\(.*\)')
+	image_pattern = re.compile('(\!\[.*?\]\[(.*?)\])(\]\(.*?\))?')
 	# todo: this regex should be looking for the image index and pulling the image that way.
 
 	images = []
 	for image in post.image_set.all():
 		images.append(image)
-
+	
 	for line in range(len(text)):
-		if images: 
+		if images[0]: 
 			url = images[0].image.url
 			description = images[0].description
 		else:
 			break
 		line_text = text[line]
-		if line_text.find(url) >= 0:
-			images.pop(0)
-		else:
-			text[line] = image_pattern.sub(r'\1'+url+')]', text[line])
-			if text[line] != line_text:
-				images.pop(0)
+		# if line_text.find(url) >= 0:
+		# 	images.pop(0)
+		# else:
+		# 	# text[line] = image_pattern.sub(r'\[!'+description+'\]\('+url+')]'+'\('+url+')', text[line])
+			# if text[line] != line_text:
+			# 	images.pop(0)
+		pattern_match = image_pattern.search(line_text)
+		# import pdb; pdb.set_trace()
+		if pattern_match != None:
+			image = images[int(pattern_match.group(2)) - 1]
+			image_reference = '[' + pattern_match.group(2) + ']: ' + image.image.url
+			text.append('\r\n' + image_reference)
+			images[int(pattern_match.group(2)) - 1] = None
+			if not(pattern_match.group(3)):
+				text[line] = image_pattern.sub(r'[\1]('+image.image.url+')', line_text)
+			
 	post.text = '\r\n'.join(text)
 	return images
 
@@ -113,7 +124,7 @@ def tag_list(request, name, page=1):
 def save_post(request, form, formset):
 	if form.is_valid():
 		post = form.save(commit=False)
-		post.author = request.user
+		# post.author = request.user
 		post.published_date = timezone.now()
 		if not(post.excerpt): 
 			if len(post.text) > 500: 
@@ -126,7 +137,8 @@ def save_post(request, form, formset):
 			try:
 				tag = Tag.objects.get(name=tagName)
 			except Tag.DoesNotExist:
-				tag = Tag.objects.create(name=tagName)
+				tag = Tag.objects.cr
+				eate(name=tagName)
 			if not( tag in post.tags.all() ):
 				post.tags.add(tag)
 
