@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.template.defaultfilters import slugify
+from versatileimagefield.fields import VersatileImageField
 
 class Category(models.Model):
 	"""	Post Category"""
@@ -71,8 +72,9 @@ class Image(models.Model):
 	"""Uploaded Images"""
 	description = models.CharField(max_length = 255, blank = True)		
 	post = models.ForeignKey(Post, default = None)
-	image = models.ImageField(upload_to = get_image_filename, verbose_name = 'Image')
-	# uploaded_at = models.DateTimeField(auto_now_add = True)
+	# image = models.ImageField(upload_to = get_image_filename, verbose_name = 'Image')
+	image = VersatileImageField(upload_to = get_image_filename, verbose_name = 'Image')
+	thumb_width = models.CharField(max_length = 4, blank = True)
 
 	def __str__(self):
 		return self.description

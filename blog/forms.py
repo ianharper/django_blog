@@ -1,6 +1,7 @@
 from django import forms
 from .models import Post, Image, Tag, Category
 from .widgets import MultiKeyTextInput
+from versatileimagefield.fields import SizedImageCenterpointClickDjangoAdminField
 
 class MultiKeyTextField(forms.CharField):
 	"""Comma seperated list of keys"""
@@ -22,7 +23,8 @@ class PostForm(forms.ModelForm):
 	
 
 class ImageForm(forms.ModelForm):
-	image = forms.ImageField(label='Image')		
+	# image = VersatileImageField(label='Image')		
+	image = SizedImageCenterpointClickDjangoAdminField(required=False)
 	class Meta:
 		model = Image
 		fields = ('image', 'description')

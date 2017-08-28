@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 from django.shortcuts import redirect
 from django import forms
 from django.forms import modelformset_factory
@@ -72,8 +73,13 @@ def swap_image_index_for_url(post):
 		pattern_match = image_pattern.search(line_text)
 		if pattern_match != None:
 			image = images[int(pattern_match.group(2)) - 1]
-			import pdb; pdb.set_trace()
-			image_reference = '[' + pattern_match.group(2) + ']: ' + image.image.url
+
+			if image.thumb_width == '': image.thumb_width = '400'
+			size_string = image.thumb_width + 'x' + image.thumb_width
+			thumb = image.image.thumbnail[size_string]
+			thumb_url = thumb.url
+
+			image_reference = '[' + pattern_match.group(2) + ']: ' + thumb_url #image.image.url
 			text.append('\r\n' + image_reference)
 			images[int(pattern_match.group(2)) - 1] = None
 			if not(pattern_match.group(3)):
