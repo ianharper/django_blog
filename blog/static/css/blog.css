@@ -58,6 +58,18 @@ img {
     height: auto;
 }
 
-.center-thumbnail {
+.post > .center-thumbnail {
     display: inline-block;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.gallery > .thumbnail {
+    width: 30%;
+    margin-left: 5px;
+    margin-right: 5px;
 }

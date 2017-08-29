@@ -22,10 +22,14 @@
 		{% endfor %}
 		</h3>
 		{% if images %}
-			{% for image in images %}
-				<img src="{{ image.image.url }}" class="img-fluid"/>
-				<p>{{ image.description }}</p>
-			{% endfor %}
+			<div class="gallery clearfix">
+				{% for image in images %}
+					<div class="thumbnail col-md-4">
+						<img src="{{ image.thumb_crop }}" class="img-fluid"/>
+						<p class="caption text-center">{{ image.description }}</p>
+					</div>
+				{% endfor %}
+			</div>
 		{% endif %}
 	</div>
 {% endblock %}

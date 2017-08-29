@@ -79,4 +79,5 @@ class Image(models.Model):
 	def __str__(self):
 		return self.description
 
-
+	def thumb_crop(self):
+		return self.image.crop['230x175'].url
