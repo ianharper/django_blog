@@ -57,3 +57,7 @@ img {
     max-width: 100%;
     height: auto;
 }
+
+.center-thumbnail {
+    display: inline-block;
+}

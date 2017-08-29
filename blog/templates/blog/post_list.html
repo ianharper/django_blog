@@ -12,14 +12,14 @@
 	    </div>
 	{% endfor %}
 
-	<div class="pagination">
 		<span>
+			<ul class = "pager">
 			{% if posts.has_previous %}
-				<a href="{{ posts.previous_page_number }}">Prev</a>
+			   <li class = "previous"><a href="{{ posts.previous_page_number }}">&larr; Prev</a></li>
 			{% endif %}
 			{% if posts.has_next %}
-				<a href="{{ posts.next_page_number }}">Next</a>
+			   <li class = "next"><a href="{{ posts.next_page_number }}">Next &rarr;</a></li>
 			{% endif %}
+			</ul>
 		</span>
-	</div>
 {% endblock %}

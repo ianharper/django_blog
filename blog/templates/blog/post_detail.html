@@ -12,7 +12,7 @@
 			<a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
 		{% endif %}
         <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-		<p>{{ post.text|markdownify|safe }}</p>
+		<p>{{ post.text|markdownify|imageCaptions|safe }}</p>
 		{% if post.category %}
 			<h3><a href="{% url 'category_list' name=post.category.name %}">{{ post.category }}</a></h3>
 		{% endif %}
