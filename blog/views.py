@@ -11,12 +11,11 @@ from .models import Post, Image, Tag
 from .forms import PostForm, ImageForm
 import re
 
-# import pdb; pdb.set_trace()
 
 def post_list(request, page):
 	if not(page): page = 1
 	post_query = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
-	posts = Paginator(post_query, 10)   
+	posts = Paginator(post_query, 10)
 	try:
 		return render(request, 'blog/post_list.html', {'posts': posts.page(page)})
 	except InvalidPage:
@@ -86,6 +85,8 @@ def swap_image_index_for_url(post):
 				text[line] = image_pattern.sub(r'[\1]('+image.image.url+')', line_text)
 			
 	post.text = '\r\n'.join(text)
+	for i in range(len(images)-1, -1, -1):
+		if images[i] == None: del images[i]
 	return images
 
 def category_list(request, name, page=1):
@@ -95,6 +96,8 @@ def category_list(request, name, page=1):
 		category__name__contains=name
 		).order_by('-published_date')
 	posts = Paginator(post_query, 10)
+	for post in range(len(post_query)):
+		swap_image_index_for_url(post_query[post])
 	try:
 		return render(request, 'blog/category_list.html', {'posts': posts.page(page)})
 	except InvalidPage:

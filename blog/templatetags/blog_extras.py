@@ -11,6 +11,7 @@ def markdownify(text):
 
 @register.filter
 def imageCaptions(text, img_pos=None):
+	# import pdb; pdb.set_trace()
 	if not(img_pos): img_pos = text.find('<img')
 	if img_pos > -1:
 		img_end = text.find('>', img_pos)
