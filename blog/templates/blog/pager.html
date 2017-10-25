@@ -1,0 +1,10 @@
+<span>
+	<ul class = "pager">
+	{% if posts.has_previous %}
+	   <li class = "previous"><a href="{{ posts.previous_page_number }}">&larr; Prev</a></li>
+	{% endif %}
+	{% if posts.has_next %}
+	   <li class = "next"><a href="{{ posts.next_page_number }}">Next &rarr;</a></li>
+	{% endif %}
+	</ul>
+</span>
