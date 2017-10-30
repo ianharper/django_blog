@@ -15,7 +15,7 @@ import re
 def post_list(request, page):
 	if not(page): page = 1
 	post_query = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
-	posts = Paginator(post_query, 10)
+	posts = Paginator(post_query, 5)
 	try:
 		return render(request, 'blog/post_list.html', {'posts': posts.page(page)})
 	except InvalidPage:
@@ -95,7 +95,7 @@ def category_list(request, name, page=1):
 		published_date__lte=timezone.now(),
 		category__name__contains=name
 		).order_by('-published_date')
-	posts = Paginator(post_query, 10)
+	posts = Paginator(post_query, 5)
 	for post in range(len(post_query)):
 		swap_image_index_for_url(post_query[post])
 	try:
@@ -110,7 +110,7 @@ def tag_list(request, name, page=1):
 		published_date__lte=timezone.now(),
 		tags__name__contains=name
 		).order_by('-published_date')
-	posts = Paginator(post_query, 10)
+	posts = Paginator(post_query, 5)
 	try:
 		return render(request, 'blog/tag_list.html', {'posts': posts.page(page)})
 	except InvalidPage:
