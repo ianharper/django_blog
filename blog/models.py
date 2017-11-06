@@ -11,6 +11,28 @@ class Category(models.Model):
 	def __str__(self):
 		return self.name
 
+	def getCategoryTagNames(self):
+		subCategories = {}
+		posts = Post.objects.filter(category=self.id)
+		for post in posts:
+			for tagName in post.getTagNames().split(', '):
+				if tagName in subCategories:
+					subCategories[tagName] += 1
+				else:
+					subCategories[tagName] = 1
+		return [key.title() for key,val in subCategories.items() if val >= 3 and key != '' ]
+
+	def getCategoryTags(self):
+		subCategories = {}
+		posts = Post.objects.filter(category=self.id)
+		for post in posts:
+			for tag in post.tags.all():
+				if tag.id in subCategories:
+					subCategories[tag.id][0] += 1
+				else:
+					subCategories[tag.id] = [1, tag]
+		return [val[1] for key,val in subCategories.items() if val[0] >= 3 and key != '' ]
+
 class Tag(models.Model):
 	"""Post Tag"""
 	name = models.CharField('Tags', max_length=100)

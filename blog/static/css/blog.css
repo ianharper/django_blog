@@ -42,6 +42,10 @@
     display: inline-block;
 }
 
+#sidebar .sub-menu {
+    padding-left: 20px;
+}
+
 a[data-toggle="collapse"] {
     position: relative;
 }

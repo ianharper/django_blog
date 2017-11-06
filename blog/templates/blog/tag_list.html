@@ -11,4 +11,6 @@
 	        <p>{{ post.text|markdownify|safe }}</p>
 	    </div>
 	{% endfor %}
+
+	{% include 'blog/pager.html' %}
 {% endblock %}

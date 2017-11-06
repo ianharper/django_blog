@@ -1,8 +1,4 @@
-
-
-
-
-
+{% load blog_extras %}
 <nav>
     <!-- Sidebar Header -->
     <div class="sidebar-header">
@@ -11,18 +7,14 @@
 
     <!-- Sidebar Links -->
     <ul class="list-unstyled components">
-        <li role="presentation"><a href="{% url 'category_list' name='Bikes' %}">Bikes</a></li>
-        <li role="presentation"><a href="{% url 'category_list' name='Bytes' %}">Bytes</a></li>
-        <li role="presentation"><a href="{% url 'category_list' name='Beer' %}">Beer</a></li>
-
-            <li>
-            <a href="{% url 'category_list' name='Beer' %}">Beer2</a>
-            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false"></a>
-            <ul class="collapse list-unstyled" id="homeSubmenu">
-                <li><a href="#">Page</a></li>
-                <li><a href="#">Page</a></li>
-                <li><a href="#">Page</a></li>
-            </ul>
+        <li role="presentation"><a href="{% url 'category_list' name='Bikes' %}">Bikes</a>
+            {% categoryTagList 'Bikes' %}
+        </li>
+        <li role="presentation"><a href="{% url 'category_list' name='Bytes' %}">Bytes</a>
+            {% categoryTagList 'Bytes' %}
+        </li>
+        <li role="presentation"><a href="{% url 'category_list' name='Beer' %}">Beer</a>
+            {% categoryTagList 'Bytes' %}
         </li>
     </ul>
 </nav>
