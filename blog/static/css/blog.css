@@ -20,6 +20,14 @@
     margin: 0px 10px
 }
 
+.navbar-header a:hover {
+    text-decoration: none;
+}
+
+.nav>li>a {
+    padding: 15px 20px;
+}
+
 #sidebar {
     padding-left: 40px;
 }
