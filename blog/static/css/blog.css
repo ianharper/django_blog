@@ -11,6 +11,10 @@
     text-decoration: none;
 }
 
+.content {
+    padding-left: 70px;
+}
+
 .navbar {
     min-height: 0px;
 }
