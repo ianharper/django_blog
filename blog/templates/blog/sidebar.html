@@ -1,20 +1,22 @@
 {% load blog_extras %}
-<nav>
-    <!-- Sidebar Header -->
-    <div class="sidebar-header">
-        <h3>Topics</h3>
-    </div>
+<div class="panel panel-default">
+    <nav>
+        <!-- Sidebar Header -->
+        <!-- <div class="sidebar-header">
+            <h3>Topics</h3>
+        </div> -->
 
-    <!-- Sidebar Links -->
-    <ul class="list-unstyled components">
-        <li role="presentation"><a href="{% url 'category_list' name='Bikes' %}">Bikes</a>
-            {% categoryTagList 'Bikes' %}
-        </li>
-        <li role="presentation"><a href="{% url 'category_list' name='Bytes' %}">Bytes</a>
-            {% categoryTagList 'Bytes' %}
-        </li>
-        <li role="presentation"><a href="{% url 'category_list' name='Beer' %}">Beer</a>
-            {% categoryTagList 'Bytes' %}
-        </li>
-    </ul>
-</nav>
+        <!-- Sidebar Links -->
+        <ul class="list-unstyled">
+            <li role="presentation"><a href="{% url 'category_list' name='Bikes' %}">Bikes</a>
+                {% categoryTagList 'Bikes' %}
+            </li>
+            <li role="presentation"><a href="{% url 'category_list' name='Bytes' %}">Bytes</a>
+                {% categoryTagList 'Bytes' %}
+            </li>
+            <li role="presentation"><a href="{% url 'category_list' name='Beer' %}">Beer</a>
+                {% categoryTagList 'Bytes' %}
+            </li>
+        </ul>
+    </nav>
+</div>
