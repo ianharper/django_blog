@@ -1,10 +1,16 @@
 {% load blog_extras %}
-<div class="panel panel-default">
-    <nav>
+<div>
+    <div class="panel panel-default about">
+        <h4>About Me</h4>
+        <p>Programmer, homebrewer, and fair-weather biker rider. By day I build line of business applications for a <a href="http://www.bellcold.com/">Bellingham Cold Storage</a>. By night I enjoy delicious homebrew crafted on my home-built brewstand, <a href="{% url 'tag_list' name='Sir_Ballington' %}">Sir Ballington</a>. Once upon a time I took a <a href="{% url 'tag_list' name='Moustache_Ride_2009' %}">really really long bike ride</a></p>
+    </div>
+
+    <nav class="panel panel-default">
         <!-- Sidebar Header -->
         <!-- <div class="sidebar-header">
             <h3>Topics</h3>
         </div> -->
+
 
         <!-- Sidebar Links -->
         <ul class="list-unstyled">

@@ -4,11 +4,16 @@
 	<div class="navbar-header navbar-brand">
 		<a href="/">ianbharper.com</a>
 	</div>
-		<ul class="nav nav-pills">
-			<li role="presentation"><a href="{% url 'category_list' name='Bikes' %}">Bikes</a></li>
-			<li role="presentation"><a href="{% url 'category_list' name='Bytes' %}">Bytes</a></li>
-			<li role="presentation"><a href="{% url 'category_list' name='Beer' %}">Beer</a></li>
-			<!-- <li role="presentation"><a href="/">Blog</a></li> -->
-		</ul>
+
+	<ul class="nav nav-pills">
+		<li role="presentation"><a href="{% url 'category_list' name='Bikes' %}">Bikes</a></li>
+		<li role="presentation"><a href="{% url 'category_list' name='Bytes' %}">Bytes</a></li>
+		<li role="presentation"><a href="{% url 'category_list' name='Beer' %}">Beer</a></li>
+		<!-- <li role="presentation"><a href="/">Blog</a></li> -->
+		
+	{% if user.is_authenticated %}
+	    <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+	{% endif %}
+	</ul>
 
 </nav>
