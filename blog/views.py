@@ -110,6 +110,8 @@ def tag_list(request, name, page=1):
 		published_date__lte=timezone.now(),
 		tags__name__contains=name
 		).order_by('-published_date')
+	for post in range(len(post_query)):
+		swap_image_index_for_url(post_query[post])
 	posts = Paginator(post_query, 5)
 	try:
 		return render(request, 'blog/tag_list.html', {'posts': posts.page(page)})
