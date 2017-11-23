@@ -134,8 +134,7 @@ def save_post(request, form, formset):
 			try:
 				tag = Tag.objects.get(name=tagName)
 			except Tag.DoesNotExist:
-				tag = Tag.objects.cr
-				eate(name=tagName)
+				tag = Tag.objects.create(name=tagName)
 			if not( tag in post.tags.all() ):
 				post.tags.add(tag)
 
