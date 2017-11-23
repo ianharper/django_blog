@@ -21,15 +21,16 @@
 
 .navbar-header {
     text-decoration: none;
-    margin: 0px 10px
+    margin: 0px 10px;
+    font-size: 2em;
+    font-family:  'Russo One', sans-serif;
 }
 
 .navbar-header a:hover {
     text-decoration: none;
-    font-size: 18px;
 }
 
-.nav>li>a {
+#topnav>ul>li>.navbar-links {
     padding: 18px 20px;
     font-size: 14px;
 }
@@ -133,6 +134,10 @@ img {
     width: 30%;
     margin-left: 5px;
     margin-right: 5px;
+}
+
+.panel-box {
+    padding: 20px;
 }
 
 @media (min-width: 768px) {

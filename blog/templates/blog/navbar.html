@@ -1,14 +1,14 @@
 
 
-<nav class="navbar navbar-default" role="navigation">
+<nav id="topnav" class="navbar navbar-default" role="navigation">
 	<div class="navbar-header navbar-brand">
 		<a href="/">ianbharper.com</a>
 	</div>
 
 	<ul class="nav nav-pills">
-		<li role="presentation"><a href="{% url 'category_list' name='Bikes' %}">Bikes</a></li>
-		<li role="presentation"><a href="{% url 'category_list' name='Bytes' %}">Bytes</a></li>
-		<li role="presentation"><a href="{% url 'category_list' name='Beer' %}">Beer</a></li>
+		<li role="presentation"><a href="{% url 'category_list' name='Bikes' %}" class="navbar-links">Bikes</a></li>
+		<li role="presentation"><a href="{% url 'category_list' name='Bytes' %}" class="navbar-links">Bytes</a></li>
+		<li role="presentation"><a href="{% url 'category_list' name='Beer' %}" class="navbar-links">Beer</a></li>
 		<!-- <li role="presentation"><a href="/">Blog</a></li> -->
 		
 	{% if user.is_authenticated %}
