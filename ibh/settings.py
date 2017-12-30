@@ -23,7 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from secret_key import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = True if os.environ['DJANGO_DEBUG'] == 'True' else False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'quizboy.local', '10.1.10.188']
 
