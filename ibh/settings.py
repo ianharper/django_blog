@@ -20,14 +20,21 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-from secret_key import *
+with open('/etc/django_blog_secret_key.txt') as f:
+    SECRET_KEY = f.read().strip()
 
+<<<<<<< HEAD
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 DEBUG = True if os.environ['DJANGO_DEBUG'] == 'True' else False
 
 #ALLOWED_HOSTS = ['127.0.0.1', 'quizboy.local', '10.1.10.188']
 ALLOWED_HOSTS = os.environ['DJANGO_HOSTS'].split(',')
+=======
+DEBUG = True if os.environ.get('DJANGO_DEBUG', False) == 'True' else False
+ALLOWED_HOSTS = os.environ['DJANGO_HOSTS'].split(',')
+
+>>>>>>> Changed ALLOWED_HOSTS to an environemnt variable. Slight change to the way DEBUG is set. The secret key is now being read ffrom a txt file in /etc/.
 
 # Application definition
 
