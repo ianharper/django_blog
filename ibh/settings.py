@@ -26,8 +26,8 @@ from secret_key import *
 # DEBUG = True
 DEBUG = True if os.environ['DJANGO_DEBUG'] == 'True' else False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'quizboy.local', '10.1.10.188']
-
+#ALLOWED_HOSTS = ['127.0.0.1', 'quizboy.local', '10.1.10.188']
+ALLOWED_HOSTS = os.environ['DJANGO_HOSTS'].split(',')
 
 # Application definition
 
