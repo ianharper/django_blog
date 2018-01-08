@@ -31,10 +31,11 @@ def post_new(request):
 
 	if request.method == "POST":
 		form = PostForm(request.POST)
-		formset = ImageFormSet(request.POST, request.FILES, 
-			queryset=Image.objects.none())
+		formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
 		if save_post(request, form, formset):
-	 		return redirect('post_detail', pk=post.pk)
+			# todo: fix this kluge. It was needed because a refactor took the pk and burried it in the save_post function.
+			post_key = Post.objects.filter(title=form.cleaned_data['title'])[0].pk
+			return redirect('post_detail', pk=post_key)
 		else:
 			print(form.errors, formset.errors)
 	else:
@@ -121,7 +122,7 @@ def tag_list(request, name, page=1):
 def save_post(request, form, formset):
 	if form.is_valid():
 		post = form.save(commit=False)
-		# post.author = request.user
+		post.author = request.user
 		post.published_date = timezone.now()
 		if not(post.excerpt): 
 			if len(post.text) > 500: 
@@ -143,11 +144,13 @@ def save_post(request, form, formset):
 			if not(tag.name in form.cleaned_data['tags']):
 				post.tags.remove(tag)
 
-		for form in formset:
-			if not 'image' in form: continue
-			image = form['image']
-			description = form['description']
-			photo = Image(post = post, image = image, description = description)
+		for image_form in formset.cleaned_data:
+			if not 'image' in image_form: continue
+			photo = Image()
+			if image_form['id']: photo = Image.objects.filter(pk=image_form['id'].pk)
+			photo.image = image_form['image'][0]
+			photo.description = image_form['description']
+			photo.post = post
 			photo.save()
 		return True
 	else:
