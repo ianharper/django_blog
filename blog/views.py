@@ -143,12 +143,13 @@ def save_post(request, form, formset):
 		for tag in post.tags.all():
 			if not(tag.name in form.cleaned_data['tags']):
 				post.tags.remove(tag)
-
+		import pdb; pdb.set_trace()
 		for image_form in formset.cleaned_data:
 			if not 'image' in image_form: continue
 			photo = Image()
-			if image_form['id']: photo = Image.objects.filter(pk=image_form['id'].pk)
-			photo.image = image_form['image'][0]
+			if image_form['id']: 
+				photo = Image(image=image_form['id'].image, pk=image_form['id'].pk)
+			if image_form['image'][0]: photo.image = image_form['image'][0]
 			photo.description = image_form['description']
 			photo.post = post
 			photo.save()
